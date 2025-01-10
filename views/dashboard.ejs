@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="/css/styles.css">
+<h1>Dashboard</h1>
+<p>Your role: <strong><%= role %></strong></p>
+
+<% if (role === 'editor' || role === 'admin') { %>
+  <h2>Insert Data</h2>
+  <form action="/dashboard/insert" method="POST">
+    <div>
+      <label>Content:</label>
+      <textarea name="content" required></textarea>
+    </div>
+    <button type="submit">Insert</button>
+  </form>
+<% } %>
+
+<h2>Data Entries</h2>
+<ul>
+  <% data.forEach((entry) => { %>
+    <li>
+      <strong><%= entry.content %></strong> by <%= entry.createdBy.name %>
+      <% if (role === 'admin') { %>
+        <form action="/dashboard/modify/<%= entry._id %>?_method=POST" method="POST">
+          <input type="text" name="content" value="<%= entry.content %>" required />
+          <button type="submit">Modify</button>
+        </form>
+      <% } %>
+    </li>
+  <% }); %>
+</ul>
